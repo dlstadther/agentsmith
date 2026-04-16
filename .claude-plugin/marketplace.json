@@ -1,0 +1,11 @@
+{
+  "name": "dlstadther-agentsmith",
+  "owner": { "name": "dlstadther" },
+  "plugins": [
+    {
+      "name": "agentsmith",
+      "source": "./",
+      "description": "Skills that put the human in command of their agents."
+    }
+  ]
+}
