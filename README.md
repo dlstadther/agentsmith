@@ -51,6 +51,44 @@ Skills are not invoked directly — Claude activates them automatically based on
 /agentsmith:from-spec path/to/spec.md EXISTING-EPIC-ID
 ```
 
+## Development
+
+### Setup
+
+Install tool dependencies via [mise](https://mise.jdx.dev/):
+
+```bash
+mise install
+make install
+```
+
+### Running tests
+
+```bash
+make test
+```
+
+### Releases
+
+Releases are fully automated. Every push to `main` runs `semantic-release`, which analyzes commits since the last tag and cuts a new release if qualifying commits exist.
+
+**Semver mapping:**
+
+| Commit type | Version bump |
+|---|---|
+| `feat:` | minor |
+| `fix:` | patch |
+| `feat!:` / `BREAKING CHANGE` footer | major |
+| `chore:`, `docs:`, `refactor:`, `ci:`, etc. | no release |
+
+The release process:
+1. Bumps `version` in `.claude-plugin/plugin.json`
+2. Updates `CHANGELOG.md`
+3. Creates a git tag (`vX.Y.Z`)
+4. Publishes a GitHub Release with changelog notes
+
+> **Note:** The `version` field in `.claude-plugin/plugin.json` is managed by CI. Do not edit it manually.
+
 ## License
 
 MIT

@@ -21,6 +21,15 @@ Skills live at `skills/<name>/SKILL.md` (not `skills/<name>.md`).
 
 No build step. Changes take effect on re-install or update.
 
+## Releases & Versioning
+
+Releases are automated via `semantic-release` on every push to `main`. Commit type determines the version bump:
+
+- `feat:` → minor, `fix:` → patch, `feat!:` / `BREAKING CHANGE` → major
+- `chore:`, `docs:`, `refactor:`, `ci:`, etc. → no release
+
+**Do not edit `version` in `.claude-plugin/plugin.json` manually** — CI owns that field.
+
 ## Key Design Decisions
 
 **`from-spec` always runs a gap review** (Step 5 of the skill) before pushing. The skill comment "The gap review always finds something" is a load-bearing instruction — do not optimize it away.
