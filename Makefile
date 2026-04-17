@@ -1,7 +1,7 @@
 .PHONY: install test release
 
 install:
-	npm ci
+	npm install
 
 test:
 	bash scripts/test-bump-version.sh
