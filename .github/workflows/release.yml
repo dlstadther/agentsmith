@@ -12,10 +12,19 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.SEMANTIC_RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.SEMANTIC_RELEASE_BOT_CLIENT_SECRET }}
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: false
+          token: ${{ steps.generate_token.outputs.token }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -27,5 +36,5 @@ jobs:
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: make release
