@@ -17,7 +17,7 @@ jobs:
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ vars.SEMANTIC_RELEASE_BOT_APP_ID }}
-          private-key: ${{ secrets.SEMANTIC_RELEASE_BOT_CLIENT_SECRET }}
+          private-key: ${{ secrets.SEMANTIC_RELEASE_BOT_PRIVATE_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v4
