@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "agentsmith",
+  "project_id": "44d4ef6f-4345-476d-b945-71429374d047"
+}

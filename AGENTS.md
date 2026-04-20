@@ -1,44 +1,40 @@
-# CLAUDE.md
+# Agent Instructions
 
-## What This Repo Is
+This project uses **bd** (beads) for issue tracking. Run `bd prime` for full workflow context.
 
-A Claude Code plugin with SDLC commands:
-
-- **`/agentsmith:from-spec`** — Converts a markdown spec into Beads issues (epic + tasks + deps + gap review). Requires `bd` (Beads CLI), installed and initialized.
-- **`/agentsmith:setup-devcontainer`** — Scaffolds an agent-ready devcontainer for a repo: firewall-protected container, `~/.claude` mount, toolchain detection, and a `make claude` target for CLI-first `--dangerously-skip-permissions` usage.
-
-Skills mirror the commands and are auto-activated by Claude based on context.
-
-## Plugin Structure
-
-Skills live at `skills/<name>/SKILL.md` (not `skills/<name>.md`).
-
-## Installing Locally
+## Quick Reference
 
 ```bash
-/plugin install /path/to/agentsmith@local
-/plugin update agentsmith
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd update <id> --claim  # Claim work atomically
+bd close <id>         # Complete work
+bd dolt push          # Push beads data to remote
 ```
 
-No build step. Changes take effect on re-install or update.
+## Non-Interactive Shell Commands
 
-## Releases & Versioning
+**ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.
 
-Releases are automated via `semantic-release` on every push to `main`. Commit type determines the version bump:
+Shell commands like `cp`, `mv`, and `rm` may be aliased to include `-i` (interactive) mode on some systems, causing the agent to hang indefinitely waiting for y/n input.
 
-- `feat:` → minor, `fix:` → patch, `feat!:` / `BREAKING CHANGE` → major
-- `chore:`, `docs:`, `refactor:`, `ci:`, etc. → no release
+**Use these forms instead:**
+```bash
+# Force overwrite without prompting
+cp -f source dest           # NOT: cp source dest
+mv -f source dest           # NOT: mv source dest
+rm -f file                  # NOT: rm file
 
-**Do not edit `version` in `.claude-plugin/plugin.json` manually** — CI owns that field.
+# For recursive operations
+rm -rf directory            # NOT: rm -r directory
+cp -rf source dest          # NOT: cp -r source dest
+```
 
-## Key Design Decisions
-
-**`from-spec` always runs a gap review** (Step 5 of the skill) before pushing. The skill comment "The gap review always finds something" is a load-bearing instruction — do not optimize it away.
-
-**`bd edit` is explicitly forbidden** in `from-spec` because it opens `$EDITOR` and blocks agents. Use `bd update --description` instead.
-
-**Dependency direction in Beads:** `bd dep add <waiter> <provider>` — the thing that waits comes first.
-
+**Other commands that may prompt:**
+- `scp` - use `-o BatchMode=yes` for non-interactive
+- `ssh` - use `-o BatchMode=yes` to fail instead of prompting
+- `apt-get` - use `-y` flag
+- `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
 ## Beads Issue Tracker
