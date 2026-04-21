@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/dlstadther/agentsmith/compare/v1.0.0...v1.1.0) (2026-04-21)
+
+
+### Features
+
+* **to-beads:** rename from-spec to to-beads, drop command, fix description formatting ([2f87b34](https://github.com/dlstadther/agentsmith/commit/2f87b34284309790d6c2cc2fc4e84c3fd2865ab2))
+
 # 1.0.0 (2026-04-18)
 
 

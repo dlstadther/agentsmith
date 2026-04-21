@@ -1,6 +1,6 @@
 {
   "name": "agentsmith",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Skills and commands for agent-assisted software development lifecycle (SDLC) workflows",
   "author": {
     "name": "dlstadther"
