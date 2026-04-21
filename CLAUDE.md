@@ -15,12 +15,20 @@ Skills live at `skills/<name>/SKILL.md` (not `skills/<name>.md`).
 
 ## Installing Locally
 
-```bash
-/plugin install /path/to/agentsmith@local
-/plugin update agentsmith
+First, register the local path as a marketplace source (one-time):
+
+```
+/plugin marketplace add /path/to/agentsmith
 ```
 
-No build step. Changes take effect on re-install or update.
+Then install/update and reload:
+
+```
+/plugin update agentsmith
+/reload-plugins
+```
+
+No build step. Changes take effect after update + reload.
 
 ## Releases & Versioning
 
