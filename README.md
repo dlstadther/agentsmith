@@ -5,23 +5,17 @@ Skills that put the human in command of their agents.
 ## Prerequisites
 
 - **[Claude Code](https://claude.ai/code)** — required to use plugins and run commands
-- **[Beads](https://github.com/gastownhall/beads)** (`bd`) — required for `from-spec`. Beads is a local-first issue tracker operated entirely from the CLI. Install and initialize it before using any `from-spec` commands.
+- **[Beads](https://github.com/gastownhall/beads)** (`bd`) — required for `agentsmith:to-beads`. Beads is a local-first issue tracker operated entirely from the CLI. Install and initialize it before using this plugin.
 
 ## Contents
 
-### Commands
-
-| Command | Description |
-|---|---|
-| `/agentsmith:from-spec` | Convert a markdown spec or design doc into Beads issues (epic + tasks + dependencies + gap review) |
-
 ### Skills
 
-Skills are not invoked directly — Claude activates them automatically based on context. Phrases like "convert this spec to Beads issues" or "translate this design doc into tasks" will trigger `agentsmith:from-spec`. Use the commands above for explicit invocation.
+Skills are activated automatically by Claude based on context — no explicit invocation needed.
 
 | Skill | Triggered by |
 |---|---|
-| `agentsmith:from-spec` | "convert spec to Beads", "translate design doc into tasks", "create Beads issues from this plan" |
+| `agentsmith:to-beads` | "convert plan to Beads", "translate design doc into tasks", "create Beads issues from this spec" |
 
 ## Installation
 
@@ -46,10 +40,13 @@ Skills are not invoked directly — Claude activates them automatically based on
 
 ## Usage
 
-```
-/agentsmith:from-spec path/to/spec.md
-/agentsmith:from-spec path/to/spec.md EXISTING-EPIC-ID
-```
+Just describe what you want in natural language:
+
+> "Convert this plan into Beads issues: path/to/plan.md"
+> "Translate this design doc into tasks: path/to/spec.md"
+> "Create Beads issues from path/to/plan.md, using EPIC-ID as the existing epic"
+
+Claude will activate `agentsmith:to-beads` automatically.
 
 ## Development
 

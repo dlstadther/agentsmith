@@ -1,54 +1,56 @@
 ---
-name: agentsmith-from-spec
-description: Use when a markdown spec, design doc, or implementation plan needs to be translated into Beads issues — epic, tasks, dependencies, and acceptance criteria.
+name: agentsmith-to-beads
+description: Use when a markdown implementation plan, spec, or design doc needs to be translated into Beads issues — epic, tasks, dependencies, and acceptance criteria. Plans (how to get there) are preferred over specs (what the goals are) since they already have discrete steps and sequencing.
 ---
 
-# Beads from Spec
+# Beads from Plan/Spec
 
-Convert a markdown spec or design document into a structured set of Beads issues: one epic for the initiative, one task per discrete workstream, and dependency links between them.
+Convert a markdown implementation plan, spec, or design document into a structured set of Beads issues: one epic for the initiative, one task per discrete workstream, and dependency links between them.
+
+**Prefer plans over specs.** A plan already has discrete steps and sequencing — use it directly. Only fall back to a spec if no plan exists.
 
 ## Process
 
 ```dot
 digraph beads_from_spec {
-    "Read spec fully" [shape=box];
+    "Read document fully" [shape=box];
     "Identify epic + tasks + deps" [shape=box];
     "Create/update epic" [shape=box];
     "3+ tasks?" [shape=diamond];
     "Parallel subagents" [shape=box];
     "Sequential bd create" [shape=box];
     "Set dependencies" [shape=box];
-    "Gap review vs spec" [shape=box];
+    "Gap review vs document" [shape=box];
     "Gaps found?" [shape=diamond];
     "Update beads" [shape=box];
     "bd dolt push" [shape=box];
 
-    "Read spec fully" -> "Identify epic + tasks + deps";
+    "Read document fully" -> "Identify epic + tasks + deps";
     "Identify epic + tasks + deps" -> "Create/update epic";
     "Create/update epic" -> "3+ tasks?";
     "3+ tasks?" -> "Parallel subagents" [label="yes"];
     "3+ tasks?" -> "Sequential bd create" [label="no"];
     "Parallel subagents" -> "Set dependencies";
     "Sequential bd create" -> "Set dependencies";
-    "Set dependencies" -> "Gap review vs spec";
-    "Gap review vs spec" -> "Gaps found?";
+    "Set dependencies" -> "Gap review vs document";
+    "Gap review vs document" -> "Gaps found?";
     "Gaps found?" -> "Update beads" [label="yes"];
     "Gaps found?" -> "bd dolt push" [label="no"];
     "Update beads" -> "bd dolt push";
 }
 ```
 
-## Step 1: Parse the Spec
+## Step 1: Parse the Document
 
-Read the entire spec before creating anything. Map spec sections to Beads fields:
+Read the entire document before creating anything. Map sections to Beads fields:
 
-| Spec element | Beads field |
+| Document element | Beads field |
 |---|---|
 | Title / Overview | Epic title + description |
-| Components / Workstreams | One task per independently implementable unit |
+| Steps / Tasks / Workstreams | One task per independently implementable unit |
 | Acceptance criteria | Included in each task `--description` |
-| Sequencing / "depends on" language | `bd dep add` relationships |
-| Spec file path | Epic `--notes="Spec: <path>"` |
+| Sequencing / "depends on" / numbered steps | `bd dep add` relationships |
+| File path | Epic `--notes="Plan: <path>"` or `--notes="Spec: <path>"` |
 | Design decisions | `--notes` on relevant task |
 
 **Task granularity:** If two things must always be done together → merge into one task. If they can be worked independently or in parallel → separate tasks.
@@ -61,13 +63,13 @@ bd create \
   --title="<initiative title>" \
   --type=feature \
   --priority=<P0-P4> \
-  --description="<overview paragraph from spec>" \
-  --notes="Spec: <path/to/spec.md>"
+  --description="<overview paragraph from document>" \
+  --notes="Plan: <path/to/file.md>"
 ```
 
 **Existing bead as epic** (e.g. a pre-existing feature bead):
 ```bash
-bd update <existing-id> --notes="Spec: <path/to/spec.md>"
+bd update <existing-id> --notes="Plan: <path/to/file.md>"
 ```
 
 ## Step 3: Create Tasks
@@ -80,11 +82,27 @@ Each task `--description` MUST include:
 - Verifiable acceptance criteria
 - Any implementation details from the spec that affect how the task is built
 
+**IMPORTANT: `bd` renders descriptions as markdown.** Numbered list markers (`1. `) get their period+space stripped, turning `1. Write` into `1Write`. Plain text without list syntax collapses into one paragraph with no line breaks.
+
+The correct pattern: use unordered list syntax (`- `) combined with `Step N:` / `ACN:` prefixes. The `-` provides line breaks; the prefix provides readable labels after the `-` is stripped:
+
+```
+Steps:
+- Step 1: Write the failing test
+- Step 2: Implement the feature
+- Step 3: Verify the test passes
+
+Acceptance criteria:
+- AC1: <measurable outcome>
+- AC2: <measurable outcome>
+```
+
 ```bash
 bd create \
   --title="<task title>" \
   --type=task \
   --priority=<match epic> \
+  --parent=<epic-id> \
   --description="<steps + acceptance criteria>"
 ```
 
@@ -108,7 +126,7 @@ Re-read the spec section by section. For each bead, verify:
 - [ ] All acceptance criteria from the spec are captured
 - [ ] All implementation details that constrain how the task is built are present
 - [ ] Dependency direction is correct (run `bd show <id>` to confirm)
-- [ ] Spec file path is in the epic notes
+- [ ] File path is in the epic notes
 - [ ] No section of the spec is unrepresented
 
 **The gap review always finds something.** Do not skip it.
