@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/dlstadther/agentsmith/compare/v1.1.0...v1.2.0) (2026-06-26)
+
+
+### Features
+
+* **superset-pr-review:** add Superset PR workspace skill ([ae5b7a9](https://github.com/dlstadther/agentsmith/commit/ae5b7a96c1a9ac558237902286d6989265410acb))
+
 # [1.1.0](https://github.com/dlstadther/agentsmith/compare/v1.0.0...v1.1.0) (2026-04-21)
 
 
