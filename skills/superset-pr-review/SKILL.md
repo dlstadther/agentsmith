@@ -1,6 +1,7 @@
 ---
 name: superset-pr-review
 description: Use when the user wants to open a dedicated Superset workspace for a GitHub pull request or GitLab merge request and run a code review inside it.
+version: "1.1.0"
 ---
 
 # superset-pr-review
@@ -12,6 +13,16 @@ Creates a Superset workspace scoped to a PR/MR branch and launches a code review
 ```
 /superset-pr-review <pr-or-mr-url> [review instructions]
 ```
+
+## Superset CLI Reference
+
+The Superset CLI is currently in beta. If a command fails or behaves unexpectedly, consult the reference docs or use the built-in help before concluding there is an environment issue:
+
+- Full CLI reference: https://docs.superset.sh/cli/cli-reference
+- Top-level help: `superset --help`
+- Per-command help: `superset <command> --help` (e.g., `superset workspaces --help`, `superset projects --help`)
+
+Run `superset --help` first if you are unsure whether a flag or subcommand exists — the beta CLI surface changes frequently.
 
 ## Steps
 
@@ -56,10 +67,12 @@ If no match: abort and ask the user to verify with `superset projects list`.
 
 ### 4. Determine the review agent prompt
 
+The `--prompt` value is passed as a literal string to the workspace agent — slash-commands are not interpreted there. Use the expanded text below, not a slash-command shorthand.
+
 | User input after URL | Prompt to pass to agent |
 |---|---|
-| None or unclear | `/code-review` |
-| Contains "roborev" | `/roborev-review` |
+| None or unclear | `Review this pull request for correctness bugs, simplification opportunities, and efficiency improvements. Read all changed files in full before forming findings. For each finding include the file path, line number, severity (critical/high/medium/low), a one-sentence description of the problem, and a suggested fix. Group findings by severity, highest first. If no issues are found, say so explicitly.` |
+| Contains "roborev" | `Run roborev review --branch --wait to review the pull request branch, then present the results: show the verdict prominently, list findings grouped by severity with file paths and line numbers, and offer to fix them if the verdict is Fail.` |
 | Other explicit instructions | Use those instructions verbatim |
 
 ### 5. Create the workspace
@@ -93,13 +106,13 @@ To open it:
 ```
 /superset-pr-review https://github.com/acme/api/pull/142
 ```
-Creates workspace `review-pr-142`, agent prompt: `/code-review`
+Creates workspace `review-pr-142`. Agent receives the expanded correctness-and-simplification prompt from Step 4.
 
 **RoboRev review:**
 ```
 /superset-pr-review https://github.com/acme/api/pull/142 use roborev
 ```
-Creates workspace `review-pr-142`, agent prompt: `/roborev-review`
+Creates workspace `review-pr-142`. Agent receives the expanded `roborev review --branch --wait` prompt from Step 4.
 
 **Custom prompt:**
 ```
