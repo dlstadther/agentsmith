@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/dlstadther/agentsmith/compare/v1.2.0...v1.2.1) (2026-06-29)
+
+
+### Bug Fixes
+
+* **superset-pr-review:** add CLI reference and expand agent prompts from slash-commands to text ([3270728](https://github.com/dlstadther/agentsmith/commit/3270728b3d20c4373c9008f446fecf3cba8c50e6))
+
 # [1.2.0](https://github.com/dlstadther/agentsmith/compare/v1.1.0...v1.2.0) (2026-06-26)
 
 
