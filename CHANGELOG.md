@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/dlstadther/agentsmith/compare/v1.2.1...v1.3.0) (2026-07-01)
+
+
+### Features
+
+* **marketplace:** split single plugin into independently installable plugins ([0c0418e](https://github.com/dlstadther/agentsmith/commit/0c0418eb8e8c00cfbb4f5588d8cd28b7d8b8f8ee))
+
 ## [1.2.1](https://github.com/dlstadther/agentsmith/compare/v1.2.0...v1.2.1) (2026-06-29)
 
 
