@@ -2,16 +2,18 @@
 
 ## What This Repo Is
 
-A Claude Code plugin with SDLC skills and commands:
+A Claude Code **marketplace** hosting multiple independently-installable plugins with SDLC skills:
 
-- **`agentsmith:to-beads`** (skill) — Converts a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review). Auto-activated by context; requires `bd` (Beads CLI), installed and initialized.
-- **`/agentsmith:setup-devcontainer`** (command) — Scaffolds an agent-ready devcontainer for a repo: firewall-protected container, `~/.claude` mount, toolchain detection, and a `make claude` target for CLI-first `--dangerously-skip-permissions` usage.
+- **`agentsmith-to-beads`** — skill `agentsmith-to-beads:to-beads` converts a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review). Auto-activated by context; requires `bd` (Beads CLI), installed and initialized.
+- **`agentsmith-superset-pr-review`** — skill `agentsmith-superset-pr-review:superset-pr-review` opens a Superset workspace scoped to a PR/MR and runs a code review inside it.
 
-Skills are auto-activated by Claude based on context.
+Skills are auto-activated by Claude based on context. Each plugin installs independently — installing one does not pull in the other.
 
 ## Plugin Structure
 
-Skills live at `skills/<name>/SKILL.md` (not `skills/<name>.md`).
+Each plugin is its own directory under `plugins/<plugin-name>/`, with its own `.claude-plugin/plugin.json` manifest. Skills live at `plugins/<plugin-name>/skills/<skill-name>/SKILL.md` (not `skills/<name>.md`). The repo root's `.claude-plugin/marketplace.json` lists every plugin and points `source` at its directory — the root itself is not a plugin.
+
+Adding a new plugin: create `plugins/<name>/.claude-plugin/plugin.json` (name, version, description, author) plus its `skills/` (or `commands/`) content, then add an entry to the root `marketplace.json`.
 
 ## Installing Locally
 
@@ -21,10 +23,11 @@ First, register the local path as a marketplace source (one-time):
 /plugin marketplace add /path/to/agentsmith
 ```
 
-Then install/update and reload:
+Then install and reload whichever plugin(s) you want:
 
 ```
-/plugin update agentsmith
+/plugin install agentsmith-to-beads@dlstadther-agentsmith
+/plugin install agentsmith-superset-pr-review@dlstadther-agentsmith
 /reload-plugins
 ```
 
@@ -37,13 +40,15 @@ Releases are automated via `semantic-release` on every push to `main`. Commit ty
 - `feat:` → minor, `fix:` → patch, `feat!:` / `BREAKING CHANGE` → major
 - `chore:`, `docs:`, `refactor:`, `ci:`, etc. → no release
 
-**Do not edit `version` in `.claude-plugin/plugin.json` manually** — CI owns that field.
+One repo-wide version is applied to every plugin's `.claude-plugin/plugin.json` on release.
+
+**Do not edit `version` in any `plugins/*/.claude-plugin/plugin.json` manually** — CI owns that field.
 
 ## Key Design Decisions
 
-**`agentsmith:to-beads` always runs a gap review** (Step 5 of the skill) before pushing. The skill comment "The gap review always finds something" is a load-bearing instruction — do not optimize it away.
+**`agentsmith-to-beads:to-beads` always runs a gap review** (Step 5 of the skill) before pushing. The skill comment "The gap review always finds something" is a load-bearing instruction — do not optimize it away.
 
-**`bd edit` is explicitly forbidden** in `agentsmith:to-beads` because it opens `$EDITOR` and blocks agents. Use `bd update --description` instead.
+**`bd edit` is explicitly forbidden** in `agentsmith-to-beads:to-beads` because it opens `$EDITOR` and blocks agents. Use `bd update --description` instead.
 
 **Dependency direction in Beads:** `bd dep add <waiter> <provider>` — the thing that waits comes first.
 
