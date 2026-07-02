@@ -11,6 +11,11 @@
       "name": "agentsmith-superset-pr-review",
       "source": "./plugins/agentsmith-superset-pr-review",
       "description": "Open a dedicated Superset workspace for a GitHub PR or GitLab MR and run a code review inside it."
+    },
+    {
+      "name": "agentsmith-pr-comments",
+      "source": "./plugins/agentsmith-pr-comments",
+      "description": "Address open PR review comments on the current branch's pull request — fix what's actionable, verify, push, resync the PR, and reply to reviewers."
     }
   ]
 }
