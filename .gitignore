@@ -8,3 +8,6 @@ package-lock.json
 .dolt/
 *.db
 .beads-credential-key
+
+# Subagent-driven-development scratch ledger
+.superpowers/
