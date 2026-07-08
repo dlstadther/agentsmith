@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/dlstadther/agentsmith/compare/v1.3.0...v1.4.0) (2026-07-08)
+
+
+### Features
+
+* **pr-comments:** add address-pr-comments skill ([#6](https://github.com/dlstadther/agentsmith/issues/6)) ([9f346fa](https://github.com/dlstadther/agentsmith/commit/9f346fa1ae5b08703bbd49b5db350840ad21776c))
+
 # [1.3.0](https://github.com/dlstadther/agentsmith/compare/v1.2.1...v1.3.0) (2026-07-01)
 
 

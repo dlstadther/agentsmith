@@ -1,6 +1,6 @@
 {
   "name": "agentsmith-superset-pr-review",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Open a dedicated Superset workspace for a GitHub PR or GitLab MR and run a code review inside it.",
   "author": {
     "name": "dlstadther"

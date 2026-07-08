@@ -1,6 +1,6 @@
 {
   "name": "agentsmith-to-beads",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Convert a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review).",
   "author": {
     "name": "dlstadther"
