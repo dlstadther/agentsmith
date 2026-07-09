@@ -4,7 +4,10 @@
 
 A Claude Code **marketplace** hosting multiple independently-installable plugins with SDLC skills:
 
-- **`agentsmith-to-beads`** — skill `agentsmith-to-beads:to-beads` converts a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review). Auto-activated by context; requires `bd` (Beads CLI), installed and initialized.
+- **`agentsmith-refinement`** — two sibling skills for hardening a plan/spec before it's trusted:
+  - `agentsmith-refinement:critique-plan` cynically reviews a markdown plan or spec for gaps (unstated assumptions, vague success criteria, unhandled edge cases, silent dependencies, scope ambiguity, contradictions), resolving what it can from the codebase and asking the user for the rest.
+  - `agentsmith-refinement:to-beads` converts a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review). Requires `bd` (Beads CLI), installed and initialized.
+  - Both auto-activated by context.
 - **`agentsmith-superset-pr-review`** — skill `agentsmith-superset-pr-review:superset-pr-review` opens a Superset workspace scoped to a PR/MR and runs a code review inside it.
 
 Skills are auto-activated by Claude based on context. Each plugin installs independently — installing one does not pull in the other.
@@ -26,7 +29,7 @@ First, register the local path as a marketplace source (one-time):
 Then install and reload whichever plugin(s) you want:
 
 ```
-/plugin install agentsmith-to-beads@dlstadther-agentsmith
+/plugin install agentsmith-refinement@dlstadther-agentsmith
 /plugin install agentsmith-superset-pr-review@dlstadther-agentsmith
 /reload-plugins
 ```
@@ -46,9 +49,9 @@ One repo-wide version is applied to every plugin's `.claude-plugin/plugin.json` 
 
 ## Key Design Decisions
 
-**`agentsmith-to-beads:to-beads` always runs a gap review** (Step 5 of the skill) before pushing. The skill comment "The gap review always finds something" is a load-bearing instruction — do not optimize it away.
+**`agentsmith-refinement:to-beads` always runs a gap review** (Step 5 of the skill) before pushing. The skill comment "The gap review always finds something" is a load-bearing instruction — do not optimize it away.
 
-**`bd edit` is explicitly forbidden** in `agentsmith-to-beads:to-beads` because it opens `$EDITOR` and blocks agents. Use `bd update --description` instead.
+**`bd edit` is explicitly forbidden** in `agentsmith-refinement:to-beads` because it opens `$EDITOR` and blocks agents. Use `bd update --description` instead.
 
 **Dependency direction in Beads:** `bd dep add <waiter> <provider>` — the thing that waits comes first.
 

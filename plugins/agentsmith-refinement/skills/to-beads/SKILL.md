@@ -1,5 +1,5 @@
 ---
-name: agentsmith-to-beads
+name: to-beads
 description: Use when a markdown implementation plan, spec, or design doc needs to be translated into Beads issues — epic, tasks, dependencies, and acceptance criteria. Plans (how to get there) are preferred over specs (what the goals are) since they already have discrete steps and sequencing.
 ---
 

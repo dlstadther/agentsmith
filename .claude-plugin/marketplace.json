@@ -3,9 +3,9 @@
   "owner": { "name": "dlstadther" },
   "plugins": [
     {
-      "name": "agentsmith-to-beads",
-      "source": "./plugins/agentsmith-to-beads",
-      "description": "Convert a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review)."
+      "name": "agentsmith-refinement",
+      "source": "./plugins/agentsmith-refinement",
+      "description": "Harden a plan or spec with a cynical gap review, then convert it into Beads issues (epic + tasks + deps + gap review)."
     },
     {
       "name": "agentsmith-superset-pr-review",
