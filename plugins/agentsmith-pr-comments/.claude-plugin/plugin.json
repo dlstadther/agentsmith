@@ -1,6 +1,6 @@
 {
   "name": "agentsmith-pr-comments",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Address open PR review comments on the current branch's pull request — fix what's actionable, verify, push, resync the PR, and reply to reviewers.",
   "author": {
     "name": "dlstadther"

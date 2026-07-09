@@ -1,3 +1,20 @@
+# [2.0.0](https://github.com/dlstadther/agentsmith/compare/v1.4.0...v2.0.0) (2026-07-09)
+
+
+* feat!: merge agentsmith-to-beads into agentsmith-refinement, add critique-plan skill ([9ed1993](https://github.com/dlstadther/agentsmith/commit/9ed199309f18f11c9cd60cada9207ce66baafb5d))
+
+
+### BREAKING CHANGES
+
+* the agentsmith-to-beads plugin id no longer exists.
+Existing installs must run `/plugin uninstall agentsmith-to-beads` and
+`/plugin install agentsmith-refinement@dlstadther-agentsmith` to
+regain the to-beads skill (now agentsmith-refinement:to-beads) and
+gain the new critique-plan skill.
+
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QiRSdxtNAhxdNhWR1PKmK7
+
 # [1.4.0](https://github.com/dlstadther/agentsmith/compare/v1.3.0...v1.4.0) (2026-07-08)
 
 
