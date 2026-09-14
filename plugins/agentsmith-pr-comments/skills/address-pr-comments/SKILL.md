@@ -7,6 +7,21 @@ description: Use when the user wants to address, resolve, or reply to pull reque
 
 Fetch every open comment on the current branch's pull request — inline review threads, review-summary bodies, and general conversation comments — fix what's actionable, run the project's own verification, push, resync the PR title/description, and reply to each thread (resolving where appropriate). GitHub only for now; see Provider Operations below for the extension point.
 
+## Bot Identification
+
+Every comment or reply this skill posts to GitHub (Step 9) must start with a first
+line identifying it as agent-generated, not human-written:
+
+```
+> [!NOTE]
+> 🤖 Automated comment by **{Model}** — not written by a human
+
+<rest of the body>
+```
+
+Replace `{Model}` with the current model's display name. This line is mandatory on
+every reply — no exceptions. It does not apply to the PR title/description (Step 8).
+
 ## Usage
 
 ```
@@ -186,13 +201,15 @@ Automatic — no confirmation pause. If the rebase produces conflicts, stop and 
 
 ### Step 8: Resync PR title/description
 
-If Step 6 produced at least one commit, regenerate the PR title and description from the final diff every run:
+If Step 6 produced at least one commit, regenerate the PR title and description from the final diff every run.
 
 ```bash
 gh pr edit $PR_NUMBER --title "<title>" --body "<body>"
 ```
 
 ### Step 9: Reply and resolve
+
+Every `$REPLY_BODY` must start with the Bot Identification banner above.
 
 | Category | Reply | Resolve? |
 |---|---|---|
@@ -255,6 +272,7 @@ Summarize for the user:
 - **NEVER** write to a target repo's `CLAUDE.md`/`AGENTS.md` without explicit confirmation
 - **ALWAYS** resync PR title/description after pushing if Step 6 produced any commit
 - **ALWAYS** treat GraphQL scope failures as a fallback trigger, not an abort condition
+- **ALWAYS** start every posted comment/reply with the Bot Identification banner (PR description excluded)
 
 ## Examples
 
