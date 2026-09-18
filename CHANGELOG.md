@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/dlstadther/agentsmith/compare/v2.0.0...v2.1.0) (2026-09-18)
+
+
+### Features
+
+* **code-reviewer:** add agentsmith-code-reviewer plugin with dillon-reviewer skill ([4f90866](https://github.com/dlstadther/agentsmith/commit/4f908665adcdd0c9bb316e31b73d45aa92ec478a))
+
 # [2.0.0](https://github.com/dlstadther/agentsmith/compare/v1.4.0...v2.0.0) (2026-07-09)
 
 
