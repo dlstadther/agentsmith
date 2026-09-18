@@ -1,0 +1,8 @@
+{
+  "name": "agentsmith-code-reviewer",
+  "version": "2.0.0",
+  "description": "Review a diff or PR using a selectable reviewer persona/style.",
+  "author": {
+    "name": "dlstadther"
+  }
+}
