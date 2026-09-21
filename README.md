@@ -11,13 +11,16 @@ A Claude Code marketplace of skills that put the human in command of their agent
 
 ### Plugins
 
-| Plugin | Skill | Triggered by |
-|---|---|---|
-| `agentsmith-refinement` | `agentsmith-refinement:critique-plan` | "review this plan for gaps", "critique this spec before we build it", "what assumptions is this doc making" |
-| `agentsmith-refinement` | `agentsmith-refinement:to-beads` | "convert plan to Beads", "translate design doc into tasks", "create Beads issues from this spec" |
-| `agentsmith-superset-pr-review` | `agentsmith-superset-pr-review:superset-pr-review` | "open a Superset workspace for this PR", "review this PR/MR in Superset" |
+| Plugin | Description |
+|---|---|
+| `agentsmith-refinement` | Harden a plan or spec with a cynical gap review, then convert it into Beads issues. |
+| `agentsmith-superset-pr-review` | Open a dedicated Superset workspace for a PR/MR and run a code review inside it. |
+| `agentsmith-pr-comments` | Address open PR review comments — fix what's actionable, verify, push, resync, reply. |
+| `agentsmith-code-reviewer` | Review a diff or PR using a selectable reviewer persona/style. |
+| `agentsmith-project-eval` | Evaluate whether a project is safe to install or use. |
 
-Skills are activated automatically by Claude based on context — no explicit invocation needed.
+Skills are activated automatically by Claude based on context — no explicit invocation needed. See
+each plugin's `skills/` directory for the skills it provides and what triggers them.
 
 ## Installation
 
@@ -25,24 +28,23 @@ Skills are activated automatically by Claude based on context — no explicit in
 
 ```
 /plugin marketplace add dlstadther/agentsmith
-/plugin install agentsmith-refinement@dlstadther-agentsmith
-/plugin install agentsmith-superset-pr-review@dlstadther-agentsmith
+/plugin install <plugin-name>@dlstadther-agentsmith
 ```
 
-Install only the plugin(s) you need — they don't depend on each other.
+Replace `<plugin-name>` with any plugin from the [Contents](#contents) list above. Install
+only the plugin(s) you need — they don't depend on each other.
 
 ### From a local clone
 
 ```
 /plugin marketplace add /path/to/agentsmith
-/plugin install agentsmith-refinement@dlstadther-agentsmith
+/plugin install <plugin-name>@dlstadther-agentsmith
 ```
 
 ### Updating
 
 ```
-/plugin update agentsmith-refinement
-/plugin update agentsmith-superset-pr-review
+/plugin update <plugin-name>
 ```
 
 ## Usage

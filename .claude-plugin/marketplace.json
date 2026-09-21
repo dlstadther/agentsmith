@@ -21,6 +21,11 @@
       "name": "agentsmith-code-reviewer",
       "source": "./plugins/agentsmith-code-reviewer",
       "description": "Review a diff or PR using a selectable reviewer persona/style."
+    },
+    {
+      "name": "agentsmith-project-eval",
+      "source": "./plugins/agentsmith-project-eval",
+      "description": "Evaluate whether a project (local path or git repo) is safe to install or use."
     }
   ]
 }
