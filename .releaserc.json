@@ -7,10 +7,10 @@
       "changelogFile": "CHANGELOG.md"
     }],
     ["@semantic-release/exec", {
-      "prepareCmd": "NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/agentsmith-refinement/.claude-plugin/plugin.json && NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/agentsmith-superset-pr-review/.claude-plugin/plugin.json && NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/agentsmith-pr-comments/.claude-plugin/plugin.json"
+      "prepareCmd": "NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/refinement/.claude-plugin/plugin.json && NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/pr-comments/.claude-plugin/plugin.json && NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/code-reviewer/.claude-plugin/plugin.json && NEXT_RELEASE_VERSION=${nextRelease.version} ./scripts/bump-version.sh plugins/project-eval/.claude-plugin/plugin.json"
     }],
     ["@semantic-release/git", {
-      "assets": ["CHANGELOG.md", "plugins/agentsmith-refinement/.claude-plugin/plugin.json", "plugins/agentsmith-superset-pr-review/.claude-plugin/plugin.json", "plugins/agentsmith-pr-comments/.claude-plugin/plugin.json"],
+      "assets": ["CHANGELOG.md", "plugins/refinement/.claude-plugin/plugin.json", "plugins/pr-comments/.claude-plugin/plugin.json", "plugins/code-reviewer/.claude-plugin/plugin.json", "plugins/project-eval/.claude-plugin/plugin.json"],
       "message": "chore(release): v${nextRelease.version} [skip ci]"
     }],
     "@semantic-release/github"

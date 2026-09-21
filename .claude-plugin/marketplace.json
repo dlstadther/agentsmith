@@ -4,27 +4,22 @@
   "plugins": [
     {
       "name": "agentsmith-refinement",
-      "source": "./plugins/agentsmith-refinement",
+      "source": "./plugins/refinement",
       "description": "Harden a plan or spec with a cynical gap review, then convert it into Beads issues (epic + tasks + deps + gap review)."
     },
     {
-      "name": "agentsmith-superset-pr-review",
-      "source": "./plugins/agentsmith-superset-pr-review",
-      "description": "Open a dedicated Superset workspace for a GitHub PR or GitLab MR and run a code review inside it."
-    },
-    {
       "name": "agentsmith-pr-comments",
-      "source": "./plugins/agentsmith-pr-comments",
+      "source": "./plugins/pr-comments",
       "description": "Address open PR review comments on the current branch's pull request — fix what's actionable, verify, push, resync the PR, and reply to reviewers."
     },
     {
       "name": "agentsmith-code-reviewer",
-      "source": "./plugins/agentsmith-code-reviewer",
+      "source": "./plugins/code-reviewer",
       "description": "Review a diff or PR using a selectable reviewer persona/style."
     },
     {
       "name": "agentsmith-project-eval",
-      "source": "./plugins/agentsmith-project-eval",
+      "source": "./plugins/project-eval",
       "description": "Evaluate whether a project (local path or git repo) is safe to install or use."
     }
   ]

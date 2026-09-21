@@ -14,7 +14,6 @@ A Claude Code marketplace of skills that put the human in command of their agent
 | Plugin | Description |
 |---|---|
 | `agentsmith-refinement` | Harden a plan or spec with a cynical gap review, then convert it into Beads issues. |
-| `agentsmith-superset-pr-review` | Open a dedicated Superset workspace for a PR/MR and run a code review inside it. |
 | `agentsmith-pr-comments` | Address open PR review comments — fix what's actionable, verify, push, resync, reply. |
 | `agentsmith-code-reviewer` | Review a diff or PR using a selectable reviewer persona/style. |
 | `agentsmith-project-eval` | Evaluate whether a project is safe to install or use. |

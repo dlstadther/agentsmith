@@ -8,15 +8,16 @@ A Claude Code **marketplace** hosting multiple independently-installable plugins
   - `agentsmith-refinement:critique-plan` cynically reviews a markdown plan or spec for gaps (unstated assumptions, vague success criteria, unhandled edge cases, silent dependencies, scope ambiguity, contradictions), resolving what it can from the codebase and asking the user for the rest.
   - `agentsmith-refinement:to-beads` converts a markdown plan, spec, or design doc into Beads issues (epic + tasks + deps + gap review). Requires `bd` (Beads CLI), installed and initialized.
   - Both auto-activated by context.
-- **`agentsmith-superset-pr-review`** — skill `agentsmith-superset-pr-review:superset-pr-review` opens a Superset workspace scoped to a PR/MR and runs a code review inside it.
 
 Skills are auto-activated by Claude based on context. Each plugin installs independently — installing one does not pull in the other.
 
 ## Plugin Structure
 
-Each plugin is its own directory under `plugins/<plugin-name>/`, with its own `.claude-plugin/plugin.json` manifest. Skills live at `plugins/<plugin-name>/skills/<skill-name>/SKILL.md` (not `skills/<name>.md`). The repo root's `.claude-plugin/marketplace.json` lists every plugin and points `source` at its directory — the root itself is not a plugin.
+Each plugin is its own directory under `plugins/<dir-name>/`, with its own `.claude-plugin/plugin.json` manifest. Skills live at `plugins/<dir-name>/skills/<skill-name>/SKILL.md` (not `skills/<name>.md`). The repo root's `.claude-plugin/marketplace.json` lists every plugin and points `source` at its directory — the root itself is not a plugin.
 
-Adding a new plugin: create `plugins/<name>/.claude-plugin/plugin.json` (name, version, description, author) plus its `skills/` (or `commands/`) content, then add an entry to the root `marketplace.json`.
+The directory name and the plugin's invocation prefix (`agentsmith-<x>`) are separate. The prefix comes only from the `name` field in `plugin.json` and the matching entry in `marketplace.json` — directories drop the `agentsmith-` prefix (e.g. `plugins/refinement/`, not `plugins/agentsmith-refinement/`). This keeps a repo-wide prefix change to editing `name` fields, not renaming directories.
+
+Adding a new plugin: create `plugins/<dir-name>/.claude-plugin/plugin.json` with `"name": "agentsmith-<dir-name>"` (plus version, description, author) and its `skills/` (or `commands/`) content, then add a matching entry to the root `marketplace.json`.
 
 ## Installing Locally
 
@@ -30,7 +31,6 @@ Then install and reload whichever plugin(s) you want:
 
 ```
 /plugin install agentsmith-refinement@dlstadther-agentsmith
-/plugin install agentsmith-superset-pr-review@dlstadther-agentsmith
 /reload-plugins
 ```
 

@@ -38,7 +38,7 @@ No arguments. Operates on the PR for the current git branch.
 
 ## Provider Operations
 
-This skill is written against GitHub. Provider dispatch is a single lookup keyed off the normalized remote host (strip `.git`, normalize SSH→HTTPS, lowercase — see `superset-pr-review`'s URL normalization for the pattern). Fill in a GitLab column here to extend to merge requests.
+This skill is written against GitHub. Provider dispatch is a single lookup keyed off the normalized remote host (strip `.git`, normalize SSH→HTTPS, lowercase). Fill in a GitLab column here to extend to merge requests.
 
 | Operation | GitHub |
 |---|---|
