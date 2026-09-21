@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/dlstadther/agentsmith/compare/v2.1.0...v2.2.0) (2026-09-21)
+
+
+### Features
+
+* **project-eval:** add safety-audit skill and plugin ([f6ccd61](https://github.com/dlstadther/agentsmith/commit/f6ccd6123212ecd1b7c41b3ab8d5091bb21819dc))
+
 # [2.1.0](https://github.com/dlstadther/agentsmith/compare/v2.0.0...v2.1.0) (2026-09-18)
 
 
