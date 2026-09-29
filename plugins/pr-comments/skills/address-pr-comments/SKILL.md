@@ -47,7 +47,7 @@ This skill is written against GitHub. Provider dispatch is a single lookup keyed
 | Fetch review summaries | `gh api repos/{owner}/{repo}/pulls/{number}/reviews` |
 | Fetch conversation comments | `gh api repos/{owner}/{repo}/issues/{number}/comments` |
 | Reply to inline comment | `gh api repos/{owner}/{repo}/pulls/{number}/comments/{comment_id}/replies -f body='...'` |
-| Reply to conversation comment | `gh api repos/{owner}/{repo}/issues/{number}/comments -f body='...'` |
+| Reply to conversation comment | `gh api repos/{owner}/{repo}/issues/{number}/comments -f body='...'` (from a file: `-F body=@file`, never `-f`) |
 | Resolve inline thread | `gh api graphql` — `resolveReviewThread` mutation (Step 9) |
 | Update PR title/description | `gh pr edit <number> --title "..." --body "..."` |
 
@@ -217,6 +217,8 @@ Every `$REPLY_BODY` must start with the Bot Identification banner above.
 | `NON_APPLICABLE` | Explain the reasoning | Yes |
 | `DISCUSSION` | Answer or ask for clarification | No |
 
+Keep the reply text in a shell variable and pass it with `-f body="$REPLY_BODY"`. If you write the reply to a file first (for example, because it has backticks or code fences), pass it with `-F body=@file`. Never use `-f body=@file`. The `-f` flag sends the text `@file` as the literal comment body. Only `-F` reads the file.
+
 Reply to inline comments:
 
 ```bash
@@ -228,6 +230,8 @@ Reply to conversation comments:
 ```bash
 gh api repos/$OWNER/$REPO/issues/$PR_NUMBER/comments -f body="$REPLY_BODY"
 ```
+
+After you post a reply, make sure that the posted body is the reply text and not a file path.
 
 Resolve an inline thread:
 
