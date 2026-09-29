@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/dlstadther/agentsmith/compare/v2.2.0...v2.2.1) (2026-09-29)
+
+
+### Bug Fixes
+
+* **pr-comments:** use -F for file reply bodies in gh api ([81d94dd](https://github.com/dlstadther/agentsmith/commit/81d94ddb174d3a1e72571d78a9a3d2a81c05c788))
+
 # [2.2.0](https://github.com/dlstadther/agentsmith/compare/v2.1.0...v2.2.0) (2026-09-21)
 
 

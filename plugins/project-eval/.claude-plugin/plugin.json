@@ -1,6 +1,6 @@
 {
   "name": "agentsmith-project-eval",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "Evaluate whether a project (local path or git repo) is safe to install or use.",
   "author": {
     "name": "dlstadther"
