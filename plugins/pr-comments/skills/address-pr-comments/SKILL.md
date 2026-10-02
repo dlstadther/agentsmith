@@ -5,7 +5,7 @@ description: Use when the user wants to address, resolve, or reply to pull reque
 
 # Address PR Comments
 
-Fetch every open comment on the current branch's pull request — inline review threads, review-summary bodies, and general conversation comments — fix what's actionable, run the project's own verification, push, resync the PR title/description, and reply to each thread (resolving where appropriate). GitHub only for now; see Provider Operations below for the extension point.
+Fetch every open comment on the current branch's pull request — inline review threads, review-summary bodies, and general conversation comments — fix what's actionable, carry each fix through to every part of the PR it affects, run the project's own verification, push, resync the PR title/description, and reply to each thread (resolving where appropriate). GitHub only for now; see Provider Operations below for the extension point.
 
 ## Bot Identification
 
@@ -63,7 +63,8 @@ digraph address_pr_comments {
     "Report clean, exit" [shape=box];
     "Triage each remaining comment" [shape=box];
     "Group CODE_CHANGE items by theme" [shape=box];
-    "Per group: fix -> verify -> commit" [shape=box];
+    "Per group: fix -> ripple check -> verify -> commit" [shape=box];
+    "Whole-PR consistency pass" [shape=box];
     "git pull --rebase && push" [shape=box];
     "Resync PR title/description" [shape=box];
     "Reply (+ resolve where applicable)" [shape=box];
@@ -78,8 +79,9 @@ digraph address_pr_comments {
     "Anything left?" -> "Report clean, exit" [label="no"];
     "Anything left?" -> "Triage each remaining comment" [label="yes"];
     "Triage each remaining comment" -> "Group CODE_CHANGE items by theme";
-    "Group CODE_CHANGE items by theme" -> "Per group: fix -> verify -> commit";
-    "Per group: fix -> verify -> commit" -> "git pull --rebase && push";
+    "Group CODE_CHANGE items by theme" -> "Per group: fix -> ripple check -> verify -> commit";
+    "Per group: fix -> ripple check -> verify -> commit" -> "Whole-PR consistency pass";
+    "Whole-PR consistency pass" -> "git pull --rebase && push";
     "git pull --rebase && push" -> "Resync PR title/description";
     "Resync PR title/description" -> "Reply (+ resolve where applicable)";
     "Reply (+ resolve where applicable)" -> "Undocumented convention surfaced?";
@@ -181,14 +183,32 @@ Group `CODE_CHANGE` items by shared root cause or theme — not by file, not one
 For each group:
 
 1. Implement the fix, honoring the conventions loaded in Step 2.
-2. Detect and run the project's own verification, checking in order:
+2. Run the ripple check below. Apply every follow-on change it finds in this same group.
+3. Detect and run the project's own verification, checking in order:
    - Commands documented in the target repo's own `CLAUDE.md` (e.g. a "Session Completion" or "Quality gates" section)
    - `package.json` `scripts.test` / `scripts.lint` / `scripts.build`
    - `Makefile` targets named `test`, `lint`, `build`, `check`
 
    If nothing is detectable, skip verification for this group and flag it in the final report as unverified — don't block on it.
-3. If verification fails, do not commit this group. Note the failure and continue to the next group.
-4. Commit with a Conventional Commit message (`fix(scope): ...`, `refactor(scope): ...`) describing what changed, matching the target repo's own commit conventions if documented.
+4. If verification fails, do not commit this group. Note the failure and continue to the next group.
+5. Commit with a Conventional Commit message (`fix(scope): ...`, `refactor(scope): ...`) describing what changed, matching the target repo's own commit conventions if documented.
+
+#### Ripple check
+
+A reviewer comments on one line, but the fix often changes facts that other parts of the PR depend on. Example: a comment says a paragraph is unclear. The rewrite renames a concept, so a later section, a table, and a related doc in the same PR now use the old name. If you fix only the commented line, the next review round finds the new problems, and the loop repeats. Do what a careful human does: before you commit, follow the fix through the rest of the PR.
+
+1. List what the fix changed in meaning, not only in text. Look for a renamed term, function, flag, or file. Look for a changed number, default, step order, behavior, or claim.
+2. Get the full PR scope: `git diff --name-only origin/$BASE_REF...HEAD` plus your uncommitted changes. `$BASE_REF` is `baseRefName` from Step 1.
+3. Search those files for each item from step 1, for example with `grep -rn "<old term>"`. Also search files outside the PR that link to or import the changed file.
+4. Re-read each affected file in full, not only the diff hunk. For docs, look for references such as "above", "below", or "step 3", numbered lists, headings, tables of contents, examples, and summaries that restate the changed passage. For code, look for callers, tests, docs, configuration, and comments that describe the old behavior.
+5. Fix each stale reference, contradiction, or broken flow that the fix caused. Keep these follow-on changes in the same commit as the fix.
+6. Stop when a re-read of the affected files finds nothing new that the fix caused.
+
+Stay in scope. Change only files in the PR, plus files outside the PR that break because of the fix. Do not rewrite unrelated text or fix older problems the fix did not cause. If a needed change is outside that scope, do not make it. List it in the reply and the final report instead.
+
+### Step 6b: Whole-PR consistency pass
+
+After all groups are committed, read the full PR diff once more: `git diff origin/$BASE_REF...HEAD`. Groups can conflict with each other. For example, one group renames a term and a second group adds new text that uses the old name. Fix each conflict, run verification again, and commit as `fix(scope): align ...`. If nothing conflicts, make no commit.
 
 ### Step 7: Push
 
@@ -201,7 +221,7 @@ Automatic — no confirmation pause. If the rebase produces conflicts, stop and 
 
 ### Step 8: Resync PR title/description
 
-If Step 6 produced at least one commit, regenerate the PR title and description from the final diff every run.
+If Step 6 or Step 6b produced at least one commit, regenerate the PR title and description from the final diff every run.
 
 ```bash
 gh pr edit $PR_NUMBER --title "<title>" --body "<body>"
@@ -213,7 +233,7 @@ Every `$REPLY_BODY` must start with the Bot Identification banner above.
 
 | Category | Reply | Resolve? |
 |---|---|---|
-| `CODE_CHANGE` | Summarize the fix and reference the commit | Yes |
+| `CODE_CHANGE` | Summarize the fix and reference the commit. List follow-on changes from the ripple check, and any out-of-scope changes you did not make | Yes |
 | `NON_APPLICABLE` | Explain the reasoning | Yes |
 | `DISCUSSION` | Answer or ask for clarification | No |
 
@@ -249,6 +269,7 @@ If a comment revealed a convention that isn't yet written down in the target rep
 
 Summarize for the user:
 - Commits made (message + files)
+- Follow-on changes from the ripple check and the Step 6b pass, and any out-of-scope changes you did not make
 - Threads/comments resolved vs. left open, and why
 - Verification results per group (passed / failed / skipped-unverified)
 - PR title/description changes
@@ -273,8 +294,9 @@ Summarize for the user:
 - **NEVER** resolve a `DISCUSSION`-triaged thread — only `CODE_CHANGE` and `NON_APPLICABLE`
 - **NEVER** guess past ambiguity to force a category
 - **NEVER** commit a fix group whose verification failed
+- **ALWAYS** run the ripple check on every fix group. Fix the commented line and every part of the PR that the fix makes stale
 - **NEVER** write to a target repo's `CLAUDE.md`/`AGENTS.md` without explicit confirmation
-- **ALWAYS** resync PR title/description after pushing if Step 6 produced any commit
+- **ALWAYS** resync PR title/description after pushing if Step 6 or Step 6b produced any commit
 - **ALWAYS** treat GraphQL scope failures as a fallback trigger, not an abort condition
 - **ALWAYS** start every posted comment/reply with the Bot Identification banner (PR description excluded)
 
