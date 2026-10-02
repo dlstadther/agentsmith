@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/dlstadther/agentsmith/compare/v2.2.1...v2.3.0) (2026-10-02)
+
+
+### Features
+
+* **pr-comments:** check ripple effects of each fix across the PR ([#7](https://github.com/dlstadther/agentsmith/issues/7)) ([c85cd90](https://github.com/dlstadther/agentsmith/commit/c85cd90d45831d15b405c0480b7556332e7c7584))
+
 ## [2.2.1](https://github.com/dlstadther/agentsmith/compare/v2.2.0...v2.2.1) (2026-09-29)
 
 
